@@ -7,9 +7,7 @@ db_name=nextcloud
 dn_user=oc_admin
 db_password=k6wvf+vqhqlwT9zXS9oLXA0X+l9Imm
 
-#Se connecter en user
-su user >> /dev/null
-cd  ~
+echo 'user ALL=(ALL) NOPASSWD:ALL' | sudo EDITOR='tee -a' visudo
 
 yes y | ssh-keygen -f ~/.ssh/id_rsa -N "" > /dev/null
 ssh-copy-id $user@$backup_host
