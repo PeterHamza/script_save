@@ -15,12 +15,16 @@ echo 'user ALL=(ALL) NOPASSWD:ALL' | sudo EDITOR='tee -a' visudo
 yes y | ssh-keygen -f ~/.ssh/id_rsa -N "" > /dev/null
 ssh-copy-id $user@$nextcloud_host
 
-ssh -t $user@$nextcloud_host 'sudo -u www-data /usr/bin/php /var/www/html/nextcloud/occ maintenance:mode --on'
-ssh $user@$nextcloud_host 'mysqldump --single-transaction -u $dbuser -p$dbpassword $dbname > ~/$databasebackup'
+echo "Maintenance mode on"
+ssh $user@$nextcloud_host 'sudo -u www-data /usr/bin/php /var/www/html/nextcloud/occ maintenance:mode --on'
 
-sudo /usr/bin/rsync --rsync-path="sudo /usr/bin/rsync" -av $user@$nextcloud_host:/var/www/html/nextcloud/ /data/backup/nextcloud
+echo "Save database"
+ssh $user@$nextcloud_host 'mysqldump --single-transaction -u $db_user -p$db_password $db_name > ~/$database_backup'
 sudo /usr/bin/rsync --rsync-path="sudo /usr/bin/rsync" -av $user@$nextcloud_hosthome/~/database/$database_backup /data/backup/$database_backup
 
+echo "Save nextcloud"
+sudo /usr/bin/rsync --rsync-path="sudo /usr/bin/rsync" -av $user@$nextcloud_host:/var/www/html/nextcloud/ /data/backup/nextcloud
 
-ssh -t $user@$nextcloud_host 'sudo -u www-data /usr/bin/php /var/www/html/nextcloud/occ maintenance:mode --off'
+echo "Maintenance mode off"
+ssh $user@$nextcloud_host 'sudo -u www-data /usr/bin/php /var/www/html/nextcloud/occ maintenance:mode --off'
 
