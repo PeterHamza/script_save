@@ -12,4 +12,4 @@ db_password=k6wvf+vqhqlwT9zXS9oLXA0X+l9Imm
 yes y | ssh-keygen -f ~/.ssh/id_rsa -N "" > /dev/null
 ssh-copy-id $user@$nextcloud_host
 
-ssh $user@$nextcloud_host "sudo -u www-data /usr/bin/php /var/www/html/nextcloud/occ maintenance:mode --on"
+ssh -t $user@$nextcloud_host "sudo -u www-data /usr/bin/php /var/www/html/nextcloud/occ maintenance:mode --on"
