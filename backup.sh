@@ -1,8 +1,8 @@
 #! /bin/bash
 
-dbname=nextcloud
-dnuser=oc_admin
-dbpassword=k6wvf+vqhqlwT9zXS9oLXA0X+l9Imm
+db_name=nextcloud
+dn_user=oc_admin
+db_password=k6wvf+vqhqlwT9zXS9oLXA0X+l9Imm
 
 date_now=$(date +%Y%m%d--%H%M%S)
 db_backup=nextcloud-$date_now
